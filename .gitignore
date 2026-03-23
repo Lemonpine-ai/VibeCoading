@@ -1,5 +1,4 @@
 # 보안 민감 파일
-AGENT_GIT_PROMPT.md
 .env
 .env.local
 .env.*.local
@@ -18,6 +17,9 @@ build/
 # OS 생성 파일
 .DS_Store
 Thumbs.db
+
+# Git 설치 파일 (로컬 전용)
+PortableGit-*.7z.exe
 
 # 로그
 *.log
