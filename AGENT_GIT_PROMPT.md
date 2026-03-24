@@ -74,12 +74,13 @@ cd "C:\Users\Administrator\Desktop\new\vibecoding3-main"
 
 ### Remote 등록이 안 되어 있을 때
 ```powershell
-& "C:\Git\cmd\git.exe" remote add origin https://Lemonpine-ai:@github.com/Lemonpine-ai/VibeCoading.git
+# HTTPS (권장): Git Credential Manager 또는 `gh auth login` 후 푸시
+& "C:\Git\cmd\git.exe" remote add origin https://github.com/Lemonpine-ai/VibeCoading.git
 ```
 
 ### Push 실패 시 (인증·네트워크)
 ```powershell
-# remote URL에 토큰 포함 여부 확인 후, 없으면 재등록
-& "C:\Git\cmd\git.exe" remote set-url origin https://Lemonpine-ai:@github.com/Lemonpine-ai/VibeCoading.git
+# 원격 URL은 토큰 없이 유지하고, 인증은 gh CLI 또는 자격 증명 관리자로 처리
+& "C:\Git\cmd\git.exe" remote set-url origin https://github.com/Lemonpine-ai/VibeCoading.git
 & "C:\Git\cmd\git.exe" push origin master
 ```
