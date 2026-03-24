@@ -14,7 +14,8 @@
     "mcp:figma": "npx -y cursor-talk-to-figma-mcp@latest",
     "mcp:socket": "npx -y cursor-talk-to-figma-socket",
     "browsers:install": "playwright install chromium",
-    "mcp:prepare": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/ensure-mcp-prerequisites.ps1"
+    "mcp:prepare": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/ensure-mcp-prerequisites.ps1",
+    "git:enable-auto-push": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/setup-git-hooks.ps1"
   },
   "dependencies": {
     "openai": "^4.77.3"
