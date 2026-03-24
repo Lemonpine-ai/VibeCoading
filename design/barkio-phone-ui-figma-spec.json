@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "referenceSite": "https://barkio.com/en",
+    "referenceScreenshot": "design/barkio-en-mobile-full.png",
+    "notes": "Playwright 추출 타이포: H1 Nunito 34px/800, body Roboto. Figma 프레임은 공식 UI가 아닌 ‘짖음 알림’ 모니터 목업입니다."
+  },
+  "figmaFrame": {
+    "name": "Barkio-inspired · Barking alert (phone UI)",
+    "nodeId": "2:2",
+    "intent": "강아지가 짖는 순간의 휴대폰 모니터 화면 — 상단 알림 스트립 + 라이브 영역 + 소음 레벨 + 컨트롤"
+  },
+  "tokensFromPage": {
+    "headingFont": "Nunito",
+    "bodyFont": "Roboto",
+    "h1Color": "#000000"
+  }
+}
