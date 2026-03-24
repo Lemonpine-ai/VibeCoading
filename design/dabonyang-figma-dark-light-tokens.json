@@ -20,9 +20,15 @@
       "surface": { "fill": "#171717", "stroke": "rgba(255,255,255,0.08)", "strokeWeight": 1 },
       "surfaceElevated": { "fill": "#1A1A1A", "shadow": "0 12px 40px rgba(0,0,0,0.45)" },
       "text": { "primary": "#F5F5F5", "secondary": "#A3A3A3", "tertiary": "#737373" },
-      "accent": { "primary": "#E82127", "onAccent": "#FFFFFF" },
+      "accent": {
+        "primary": "#AD8585",
+        "onAccent": "#FFFFFF",
+        "note": "다크 배경에서 순수 레드(#E82127)는 본문 시선을 가로챔 → 채도·명도를 낮춘 더스티 로즈(머브)로 CTA 통일",
+        "secondaryMuted": "#9A9090",
+        "secondaryMutedNote": "작은 라벨·AI 뱃지 — 본문과 경쟁하지 않는 중립 머브그레이"
+      },
       "divider": "rgba(255,255,255,0.1)",
-      "chart": { "line": "rgba(255,255,255,0.15)", "fillMuted": "rgba(232,33,39,0.18)" }
+      "chart": { "line": "rgba(255,255,255,0.15)", "fillMuted": "rgba(173,133,133,0.22)" }
     }
   },
   "frames": {
