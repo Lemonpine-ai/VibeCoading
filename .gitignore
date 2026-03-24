@@ -1,0 +1,26 @@
+# 보안 민감 파일
+.env
+.env.local
+.env.*.local
+
+# 의존성
+node_modules/
+
+# 빌드 결과물
+dist/
+build/
+
+# 에디터 설정
+.vscode/
+.idea/
+
+# OS 생성 파일
+.DS_Store
+Thumbs.db
+
+# Git 설치 파일 (로컬 전용)
+PortableGit-*.7z.exe
+
+# 로그
+*.log
+npm-debug.log*

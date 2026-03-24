@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "TalkToFigma": {
+      "command": "C:\\Users\\Administrator\\.bun\\bin\\bun.exe",
+      "args": ["C:\\path-to-repo\\src\\talk_to_figma_mcp\\server.ts"]
+    }
+  }
+}
