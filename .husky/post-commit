@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# 커밋 직후 origin/master 로 푸시
+git push origin master

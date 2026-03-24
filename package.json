@@ -15,13 +15,15 @@
     "mcp:socket": "npx -y cursor-talk-to-figma-socket",
     "browsers:install": "playwright install chromium",
     "mcp:prepare": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/ensure-mcp-prerequisites.ps1",
-    "git:enable-auto-push": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/setup-git-hooks.ps1"
+    "git:enable-auto-push": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/setup-git-hooks.ps1",
+    "prepare": "husky"
   },
   "dependencies": {
     "openai": "^4.77.3"
   },
   "devDependencies": {
     "@playwright/mcp": "^0.0.35",
+    "husky": "^9.1.7",
     "playwright": "^1.49.1",
     "vite": "^5.4.11"
   }
