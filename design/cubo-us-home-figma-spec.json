@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "sourceUrl": "https://us.getcubo.com/",
+    "referenceScreenshot": "design/cubo-us-home-reference.png",
+    "extractedAt": "2026-03-24",
+    "notes": "Playwright로 추출한 CSS 변수·타이포. Figma에서는 Museo Sans Rounded 대신 Nunito 또는 Varela Round를 대체 폰트로 사용 가능."
+  },
+  "canvas": {
+    "frameName": "Cubo US · Home (Desktop)",
+    "width": 1440,
+    "minHeight": 3200,
+    "background": "#FFFFFF"
+  },
+  "colorStyles": [
+    { "name": "Cubo / Text Primary", "hex": "#4B4B4B", "cssVar": "--gray-color" },
+    { "name": "Cubo / Primary Teal", "hex": "#24CEB9", "cssVar": "--primary-color" },
+    { "name": "Cubo / Primary Mint", "hex": "#5BE3D3", "cssVar": "--primary-color-700" },
+    { "name": "Cubo / Primary Teal Light", "hex": "#E9F4F3", "cssVar": "--tertiary-color" },
+    { "name": "Cubo / Secondary Coral", "hex": "#FF8784", "cssVar": "--secondary-color" },
+    { "name": "Cubo / Accent Blue", "hex": "#4CC3E5", "cssVar": "--blue-color" },
+    { "name": "Cubo / Sky Blue", "hex": "#7ED4ED", "cssVar": "--blue-color-700" },
+    { "name": "Cubo / Warning Amber", "hex": "#FFB516", "cssVar": "--warning-color" },
+    { "name": "Cubo / Gray BG", "hex": "#EBEBEF", "cssVar": "--gray-color-100" },
+    { "name": "Cubo / Night", "hex": "#4E5A6B", "cssVar": "--night-color" }
+  ],
+  "textStyles": [
+    {
+      "name": "Cubo / H1 Hero",
+      "fontFamily": "Museo Sans Rounded (or Nunito SemiBold)",
+      "size": 40,
+      "lineHeight": 48,
+      "weight": 600,
+      "color": "#4B4B4B"
+    },
+    {
+      "name": "Cubo / Body",
+      "fontFamily": "Corbel / system-ui sans",
+      "size": 16,
+      "weight": 400,
+      "color": "#4B4B4B"
+    },
+    {
+      "name": "Cubo / CTA Pill",
+      "fontFamily": "Museo Sans Rounded",
+      "size": 20,
+      "weight": 600,
+      "color": "#4B4B4B",
+      "background": "#5BE3D3",
+      "radius": 50
+    }
+  ],
+  "layoutSections": [
+    {
+      "id": "header",
+      "height": 72,
+      "content": "로고(좌), 글로벌 국가·카트(우), 중앙 메가메뉴: Our Product / Our App / Our Features / Expert Insights / About"
+    },
+    {
+      "id": "hero",
+      "content": "H1: The Smart Baby Monitor Prioritizing Safety | AI Alerts, Sleep Tracking & Peace of Mind — 서브카피, Sign up 폼, 라운드 민트 CTA 버튼 스타일"
+    },
+    {
+      "id": "awards",
+      "content": "키인드레드·바운티 등 수상 배지 카드, 인용문 타이포, 넉넉한 여백"
+    },
+    {
+      "id": "featurePillars",
+      "content": "Safety / Sleep / Health / Memories 4열 아이콘+제목, 연한 민트·블루·코랄 포인트 배경 블록"
+    },
+    {
+      "id": "comparison",
+      "content": "Why choose CuboAi 비교표 — Cubo vs Traditional, 테이블 보더·라운드 카드"
+    },
+    {
+      "id": "reviews",
+      "content": "Making parenting easier — 카드 캐러셀 느낌의 후기 블록"
+    },
+    {
+      "id": "footerCta",
+      "content": "Get $10 Off — 이메일 구독, 라이트 그레이 배경 섹션"
+    }
+  ]
+}
