@@ -5,8 +5,8 @@
       "args": ["-y", "@playwright/mcp@latest"]
     },
     "TalkToFigma": {
-      "command": "C:\\Users\\Administrator\\.bun\\bin\\bunx.exe",
-      "args": ["cursor-talk-to-figma-mcp@latest"]
+      "command": "C:\\Program Files\\nodejs\\npx.cmd",
+      "args": ["-y", "cursor-talk-to-figma-mcp@latest"]
     }
   }
 }
