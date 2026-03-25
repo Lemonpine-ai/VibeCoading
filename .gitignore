@@ -10,8 +10,9 @@ node_modules/
 dist/
 build/
 
-# 에디터 설정
-.vscode/
+# 에디터 설정 (공유할 설정만 예외로 커밋)
+.vscode/*
+!.vscode/settings.json
 .idea/
 
 # OS 생성 파일
