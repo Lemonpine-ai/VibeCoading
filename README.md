@@ -1,0 +1,126 @@
+# 다보냥 — 고양이와 함께하는 케어 앱 (회사: 왔냥)
+
+> 고양이와 함께하는 행복한 삶을 위한 종합 서비스 플랫폼
+
+## 프로젝트 소개
+
+**다보냥**은 **왔냥**이 서비스하는 고양이 보호자를 위한 웹 기반 서비스 플랫폼입니다.
+고양이 건강 관리, 커뮤니티, AI 챗봇 상담 등 다양한 기능을 하나의 페이지에서 제공합니다.
+
+## 주요 기능
+
+### 회원 시스템
+- 로그인 / 로그아웃
+- 세션 기반 인증
+- 사용자별 데이터 로컬 저장 (localStorage)
+
+### 마이페이지
+- **구독서비스 관리** — 월 4,900원 기본 + 추가 고양이당 1,000원
+- **고양이 관리** — 이름 설정, 사진 업로드
+- **실시간 리포트** — 활동량, 식사량, 배변량, 기침, 구토 상태 시각화
+- **가족 연결 설정** — 가족 계정 연동 및 인증
+- **내가 쓴 글** — 커뮤니티 / 고객센터 작성글 조회
+
+### 커뮤니티
+- 묘종별, 연령별, 질병별 카테고리 필터
+- 아나바다 (교환/판매), 체험단/후기 게시판
+- 카드뷰 / 리스트뷰 전환
+- 게시글 검색 (제목, 내용, 작성자)
+- 글쓰기, 댓글, 좋아요
+
+### 고객센터
+- **자주 묻는 질문 (FAQ)** — 설치, 에러, 고양이 설정, 구독 관련
+- **1:1 질문하기** — 비밀글 문의 게시판
+- **AI 챗봇 상담** — OpenAI 기반 실시간 상담
+- **원격 서비스** — 원격지원 연결
+- **전화 고객센터** — 운영시간 안내
+
+### AI 챗봇
+- Cloudflare Workers를 통한 OpenAI API 연동
+- 고객센터 내 챗봇 + 플로팅 위젯 챗봇
+- 관리자 자동 댓글 시스템 (커뮤니티 게시글에 AI가 자동 응답)
+
+## 기술 스택
+
+| 분류 | 기술 |
+|------|------|
+| 프론트엔드 | HTML5, CSS3, Vanilla JavaScript |
+| 빌드 도구 | Vite |
+| AI 백엔드 | Cloudflare Workers + OpenAI API |
+| 패키지 관리 | npm |
+
+## MCP (Cursor) — Playwright · Figma
+
+- **설정 파일**: `.cursor/mcp.json` — `playwright` (`@playwright/mcp`), `TalkToFigma` (`cursor-talk-to-figma-mcp`)
+- **상세 문서**: `docs/MCP_SETUP.md`
+- **Figma 대시보드 UI**: `npm run dev` 후 브라우저에서 `http://localhost:5173/figma-mcp-dashboard/`
+
+## 프로젝트 구조
+
+```
+├── index.html                 # 메인 HTML (SPA)
+├── cat/                       # CAT(Supabase) 고양이 리포트 대시보드
+│   ├── index.html             # cat_reports · 로그인 · 실시간
+│   └── README.md              # public 스키마 점검·연동 안내
+├── cat-report.html            # cat/index.html 로 이동
+├── vite.config.js           # Vite 멀티 페이지 (메인 + figma-mcp-dashboard)
+├── figma-mcp-dashboard/     # Figma·Playwright MCP 안내 대시보드
+├── playwright-mcp/            # MCP 관련 메모(로그는 .gitignore)
+├── docs/MCP_SETUP.md        # MCP 설치·연동 가이드
+├── .cursor/mcp.json         # Cursor MCP 서버 등록
+├── styles.css               # 전체 스타일시트
+├── script.js                # 네비게이션, 로그인, 커뮤니티 등 핵심 로직
+├── chatbot.js               # 고객센터 내 AI 챗봇
+├── floating-chatbot.js      # 플로팅 챗봇 위젯
+├── admin-comments.js        # 커뮤니티 관리자 자동 댓글
+├── chatbot.css              # 챗봇 전용 스타일
+├── package.json             # 프로젝트 설정 및 의존성
+├── .gitignore               # Git 제외 파일 목록
+└── README.md                # 프로젝트 문서
+```
+
+## 시작하기
+
+### 사전 요구사항
+
+- [Node.js](https://nodejs.org/) v18 이상
+- npm
+
+### 설치 및 실행
+
+```bash
+# 의존성 설치 (설치 직후 Playwright Chromium 자동 다운로드)
+npm install
+
+# 개발 서버 실행
+npm run dev
+
+# 개발 서버 + 브라우저에서 Figma MCP 대시보드 열기
+npm run dev:dashboard
+
+# 프로덕션 빌드
+npm run build
+
+# 빌드 결과물 미리보기
+npm run preview
+```
+
+**MCP / Playwright 관련:** `npm run mcp:playwright` · `npm run mcp:figma` · Figma 소켓 `npm run mcp:socket` — 상세는 `docs/MCP_SETUP.md` 참고.
+
+### 환경 변수 설정
+
+AI 챗봇 기능을 사용하려면 Cloudflare Workers URL을 설정해야 합니다.
+`chatbot.js`, `floating-chatbot.js`, `admin-comments.js` 파일 상단의 Worker URL을 실제 배포 주소로 변경하세요.
+
+## 사용 방법
+
+1. 앱(웹)에 접속
+2. 로그인 (테스트 계정: ID `test` / PW `test`)
+3. 마이페이지에서 고양이 이름 및 사진 설정
+4. 구독 서비스 관리에서 요금제 확인
+5. 커뮤니티에서 다른 보호자들과 소통
+6. 궁금한 점은 AI 챗봇에게 문의
+
+## 라이선스
+
+© 2026 왔냥. All rights reserved.

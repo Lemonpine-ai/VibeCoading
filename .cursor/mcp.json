@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "C:\\Program Files\\nodejs\\npx.cmd",
+      "args": ["-y", "@playwright/mcp@latest"]
+    },
+    "TalkToFigma": {
+      "command": "bun",
+      "args": ["x", "cursor-talk-to-figma-mcp@latest"]
+    }
+  }
+}

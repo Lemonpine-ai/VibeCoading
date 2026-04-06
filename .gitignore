@@ -13,19 +13,24 @@
 
 # production
 /build
+dist/
 
 # misc
 .DS_Store
+Thumbs.db
 *.pem
 
 # debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*.log
 
 # local env files
-.env*.local
 .env
+.env.local
+.env*.local
+.env.*.local
 
 # vercel
 .vercel
@@ -36,3 +41,11 @@ next-env.d.ts
 
 # pnpm
 pnpm-debug.log*
+
+# editor (공유할 설정만 예외로 커밋)
+.vscode/*
+!.vscode/settings.json
+.idea/
+
+# Git 설치 파일 (로컬 전용)
+PortableGit-*.7z.exe

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "다보냥(CATvisor 1–4) Figma 리파인 — 라이트/다크 공통 토큰. Pretendard 또는 Inter+Noto Sans KR.",
+  "themes": {
+    "light_refined": {
+      "label": "라이트 · 세련",
+      "canvas": { "background": "#F5F5F5" },
+      "frame": { "fill": "#FAFAFA" },
+      "surface": { "fill": "#FFFFFF", "stroke": "#E8E8E8", "strokeWeight": 1 },
+      "surfaceElevated": { "fill": "#FFFFFF", "shadow": "0 8px 24px rgba(0,0,0,0.06)" },
+      "text": { "primary": "#0D0D0D", "secondary": "#525252", "tertiary": "#A3A3A3" },
+      "accent": { "primary": "#E82127", "onAccent": "#FFFFFF" },
+      "divider": "#E5E5E5",
+      "chart": { "line": "#D4D4D4", "fillMuted": "rgba(232,33,39,0.12)" }
+    },
+    "dark": {
+      "label": "다크",
+      "canvas": { "background": "#0A0A0A" },
+      "frame": { "fill": "#0D0D0D" },
+      "surface": { "fill": "#171717", "stroke": "rgba(255,255,255,0.08)", "strokeWeight": 1 },
+      "surfaceElevated": { "fill": "#1A1A1A", "shadow": "0 12px 40px rgba(0,0,0,0.45)" },
+      "text": { "primary": "#F5F5F5", "secondary": "#A3A3A3", "tertiary": "#737373" },
+      "accent": {
+        "primary": "#AD8585",
+        "onAccent": "#FFFFFF",
+        "note": "다크 배경에서 순수 레드(#E82127)는 본문 시선을 가로챔 → 채도·명도를 낮춘 더스티 로즈(머브)로 CTA 통일",
+        "secondaryMuted": "#9A9090",
+        "secondaryMutedNote": "작은 라벨·AI 뱃지 — 본문과 경쟁하지 않는 중립 머브그레이"
+      },
+      "divider": "rgba(255,255,255,0.1)",
+      "chart": { "line": "rgba(255,255,255,0.15)", "fillMuted": "rgba(173,133,133,0.22)" }
+    }
+  },
+  "frames": {
+    "mcpChannel": "68ck883i",
+    "sourceNodeIds": {
+      "01_splash": "3:22",
+      "02_dashboard": "3:28",
+      "03_health": "4:48",
+      "04_account": "4:49"
+    },
+    "darkDuplicateNodeIds": {
+      "01_splash": "6:9",
+      "02_dashboard": "6:16",
+      "03_health": "6:36",
+      "04_account": "6:47",
+      "canvasY": 4880
+    },
+    "darkDuplicate": {
+      "offsetY": 920,
+      "namePrefix": "(다보냥 · Dark) ",
+      "nameSuffix": ""
+    },
+    "lightRefinedDuplicate": {
+      "offsetY": -920,
+      "namePrefix": "(다보냥 · Light) ",
+      "note": "기존 틸 톤을 리파인할 때: 원본 옆에 복제 후 이 토큰으로 재색칠. offsetY는 캔버스 여유에 맞게 조정."
+    }
+  },
+  "typography": {
+    "title": { "size": 22, "weight": 600, "letterSpacingPercent": -2 },
+    "body": { "size": 15, "weight": 400 },
+    "caption": { "size": 12, "weight": 500, "letterSpacingPercent": 2 }
+  }
+}

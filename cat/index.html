@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>고양이 모니터링 리포트 · CAT</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root { color-scheme: light; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; padding: 20px; background: #f5f7fa; min-height: 100vh; }
+    h1 { margin-top: 0; }
+    .report-card { background: white; border-radius: 12px; padding: 20px; margin: 10px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .cat-name { font-size: 24px; font-weight: bold; color: #ff6b6b; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin: 15px 0; }
+    .stat { text-align: center; padding: 10px; background: #f0f4f8; border-radius: 8px; }
+    .stat-number { font-size: 28px; font-weight: bold; color: #4ecdc4; }
+    #realtime { position: fixed; top: 10px; right: 10px; padding: 10px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; z-index: 10; }
+    #realtime.ok { background: #10b981; color: white; }
+    #realtime.warn { background: #f59e0b; color: #111; }
+    #realtime.err { background: #ef4444; color: white; }
+    .auth-panel { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; max-width: 420px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .auth-panel label { display: block; margin-top: 10px; font-size: 14px; color: #374151; }
+    .auth-panel input { width: 100%; box-sizing: border-box; padding: 10px 12px; margin-top: 4px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 15px; }
+    .auth-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .auth-row button { flex: 1; min-width: 120px; padding: 10px 14px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px; }
+    .btn-primary { background: #4ecdc4; color: #0f172a; }
+    .btn-secondary { background: #e5e7eb; color: #111827; }
+    .hint { font-size: 13px; color: #6b7280; margin-top: 12px; line-height: 1.5; }
+    .user-bar { font-size: 14px; color: #374151; margin-bottom: 8px; }
+    .empty-msg { color: #6b7280; padding: 16px; }
+  </style>
+</head>
+<body>
+  <div id="realtime" class="warn">로그인 필요</div>
+
+  <h1>🐱 다중 고양이 리포트 대시보드 (CAT)</h1>
+
+  <section class="auth-panel" id="authPanel">
+    <div class="user-bar" id="userBar"></div>
+    <label for="email">이메일</label>
+    <input type="email" id="email" autocomplete="email" placeholder="you@example.com" />
+    <label for="password">비밀번호</label>
+    <input type="password" id="password" autocomplete="current-password" placeholder="••••••••" />
+    <div class="auth-row">
+      <button type="button" class="btn-primary" id="btnSignIn">로그인</button>
+      <button type="button" class="btn-secondary" id="btnSignUp">회원가입</button>
+      <button type="button" class="btn-secondary" id="btnSignOut" hidden>로그아웃</button>
+    </div>
+    <p class="hint">
+      리포트는 <code>cat_reports</code> 뷰를 사용하며, 로그인한 계정과 <code>app_users.auth_user_id</code>가 연결된 고양이만 표시됩니다.
+      첫 사용 시 Supabase에서 <code>app_users</code>에 본인 행을 맞춰 두어야 할 수 있습니다.
+    </p>
+  </section>
+
+  <div id="reports"></div>
+
+  <script>
+    const supabaseUrl = 'https://nqcipfozkdedklqnkzju.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5xY2lwZm96a2RlZGtscW5remp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNTk4MDcsImV4cCI6MjA4OTkzNTgwN30.Zh-f9lWT5K48RP7PRN3_44-bNnjJ9nRFB3Nr3QymTX0';
+
+    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseAnonKey, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
+    });
+
+    const realtimeBadge = document.getElementById('realtime');
+    const userBar = document.getElementById('userBar');
+    const btnSignIn = document.getElementById('btnSignIn');
+    const btnSignUp = document.getElementById('btnSignUp');
+    const btnSignOut = document.getElementById('btnSignOut');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+
+    let realtimeChannel;
+
+    function setRealtimeStatus({ text, variant }) {
+      realtimeBadge.textContent = text;
+      realtimeBadge.className = variant;
+    }
+
+    function formatLastEvent(isoString) {
+      if (!isoString) return '최근 이벤트 없음';
+      const parsed = new Date(isoString);
+      if (Number.isNaN(parsed.getTime())) return '최근 이벤트 없음';
+      return `최신: ${parsed.toLocaleString('ko-KR')}`;
+    }
+
+    async function loadReports() {
+      const reportsDiv = document.getElementById('reports');
+      const { data: sessionData } = await supabaseClient.auth.getSession();
+      if (!sessionData.session) {
+        reportsDiv.innerHTML = '<p class="empty-msg">로그인 후 리포트를 불러옵니다.</p>';
+        return;
+      }
+
+      const { data: reports, error } = await supabaseClient.from('cat_reports').select('*');
+
+      if (error) {
+        console.error(error);
+        reportsDiv.innerHTML = `<p class="empty-msg">불러오기 오류: ${error.message}</p>`;
+        return;
+      }
+
+      if (!reports || reports.length === 0) {
+        reportsDiv.innerHTML =
+          '<p class="empty-msg">표시할 고양이가 없습니다. <code>cats</code> 데이터와 <code>app_users.auth_user_id</code> 연결을 확인하세요.</p>';
+        return;
+      }
+
+      reportsDiv.innerHTML = reports
+        .map(
+          (report) => `
+        <div class="report-card">
+          <div class="cat-name">${report.cat_name} ${report.sex || ''}</div>
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-number">${report.meals_7d ?? 0}</div>
+              <span>식사</span>
+            </div>
+            <div class="stat">
+              <div class="stat-number">${report.toilets_7d ?? 0}</div>
+              <span>배변</span>
+            </div>
+            <div class="stat">
+              <div class="stat-number">${Math.round((report.total_activity_sec_7d || 0) / 60)}</div>
+              <span>활동(분)</span>
+            </div>
+            <div class="stat">
+              <div class="stat-number">${report.jumps_7d ?? 0}</div>
+              <span>점프</span>
+            </div>
+            <div class="stat">
+              <div class="stat-number">${report.avg_pain_score_7d != null ? Number(report.avg_pain_score_7d).toFixed(1) : '0'}</div>
+              <span>통증</span>
+            </div>
+          </div>
+          <small>${formatLastEvent(report.last_event_time)}</small>
+        </div>
+      `
+        )
+        .join('');
+    }
+
+    async function startRealtime() {
+      if (realtimeChannel) {
+        await supabaseClient.removeChannel(realtimeChannel);
+        realtimeChannel = null;
+      }
+
+      const { data: sessionData } = await supabaseClient.auth.getSession();
+      if (!sessionData.session) {
+        setRealtimeStatus({ text: '로그인 필요', variant: 'warn' });
+        return;
+      }
+
+      setRealtimeStatus({ text: '실시간 연결 중…', variant: 'warn' });
+
+      realtimeChannel = supabaseClient
+        .channel('cat-reports-refresh')
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'behavior_events' },
+          () => {
+            loadReports();
+          }
+        )
+        .subscribe((status) => {
+          if (status === 'SUBSCRIBED') {
+            setRealtimeStatus({ text: '실시간 연결됨', variant: 'ok' });
+          } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+            setRealtimeStatus({ text: '실시간 오류', variant: 'err' });
+          }
+        });
+    }
+
+    function updateAuthUi(session) {
+      const signedIn = Boolean(session);
+      userBar.textContent = signedIn
+        ? `로그인: ${session.user.email ?? session.user.id}`
+        : '로그인하지 않음';
+      btnSignOut.hidden = !signedIn;
+      btnSignIn.disabled = signedIn;
+      btnSignUp.disabled = signedIn;
+      emailInput.disabled = signedIn;
+      passwordInput.disabled = signedIn;
+    }
+
+    btnSignIn.addEventListener('click', async () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error) {
+        alert(`로그인 실패: ${error.message}`);
+        return;
+      }
+      await loadReports();
+      await startRealtime();
+    });
+
+    btnSignUp.addEventListener('click', async () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      const { error } = await supabaseClient.auth.signUp({ email, password });
+      if (error) {
+        alert(`회원가입 실패: ${error.message}`);
+        return;
+      }
+      alert('가입 확인 메일이 있으면 확인 후 로그인하세요.');
+    });
+
+    btnSignOut.addEventListener('click', async () => {
+      await supabaseClient.auth.signOut();
+      document.getElementById('reports').innerHTML = '';
+      if (realtimeChannel) {
+        await supabaseClient.removeChannel(realtimeChannel);
+        realtimeChannel = null;
+      }
+      setRealtimeStatus({ text: '로그인 필요', variant: 'warn' });
+    });
+
+    supabaseClient.auth.onAuthStateChange((_event, session) => {
+      updateAuthUi(session);
+      if (session) {
+        loadReports();
+        startRealtime();
+      } else {
+        document.getElementById('reports').innerHTML =
+          '<p class="empty-msg">로그인 후 리포트를 불러옵니다.</p>';
+      }
+    });
+
+    window.addEventListener('load', async () => {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      updateAuthUi(session);
+      if (session) {
+        await loadReports();
+        await startRealtime();
+      } else {
+        document.getElementById('reports').innerHTML =
+          '<p class="empty-msg">로그인 후 리포트를 불러옵니다.</p>';
+      }
+    });
+  </script>
+</body>
+</html>

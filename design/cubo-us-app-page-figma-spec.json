@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "sourceUrl": "https://us.getcubo.com/pages/app",
+    "referenceScreenshot": "design/cubo-us-app-page-reference.png",
+    "notes": "Playwright 390px 뷰포트 추출. 히어로 H1은 사이트에서 흰색 36px/600 (어두운 히어로 배경 위)."
+  },
+  "hero": {
+    "h1": "Our App",
+    "h1Style": { "color": "#FFFFFF", "fontSize": 36, "fontWeight": 600 },
+    "subtitle": "Everything you want to see on one app"
+  },
+  "sectionsFromPage": [
+    "A Parent's Day with CuboAi",
+    "Start your day · live feeds · sleep report",
+    "3 Full-Day Video Playback",
+    "True Cry Detection · Two-Way Audio · Family Sharing",
+    "Danger Zone · bedtime routine · sleep trend · Moments Wall",
+    "Night Light · QHD Night Vision · Lullabies",
+    "Ready to try out these features? · Shop now"
+  ],
+  "tokens": {
+    "primary": "#24CEB9",
+    "primaryMint": "#5BE3D3",
+    "text": "#4B4B4B",
+    "night": "#4E5A6B",
+    "tealLight": "#E9F4F3"
+  }
+}
